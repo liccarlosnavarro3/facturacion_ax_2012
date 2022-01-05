@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/3" xsi:schemaLocation="http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd" Version="3.3" Serie="A" Folio="276" Fecha="2021-04-05T00:00:01" FormaPago="03" NoCertificado="00001000000503930578" Certificado="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" SubTotal="8203.77" Moneda="MXN" Total="9516.37" TipoDeComprobante="I" MetodoPago="PUE" LugarExpedicion="44610" Sello="kjDQVII1OHPNP50bThtVhNRUA9WNS6VxGuaoMvS/6/ONYKj1ezUhoLhq88WuPrK/geIrpht1PyPZokCbvzkK8PHGGPaA2QUoIHy7wfe/HbvIEUUtcfuWYzrXUuxtJVMnmLMqV7Jbsl9yZmk8B3geuqT5dOLEWbfeozRcb7OM4yKdz351MOrBFlAHCrBgDwkgcF+JsFxZHzZlC1quxaCc6Wfa8uq2YgcClNW/mU49G00jD9P4Vx7b7r/72ACWSNTz0hufnd49N8coCQpBRHwYOv8dcG7iK4sWYwpIGN6vxYCLw8gm0X/p4WdLmkwqKC6PqiBuPGs6DyHvJSgMwIK1Lg==" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <cfdi:Emisor Rfc="ALM9910114D6" Nombre="Ab&amp;c Leasing de México S.A.P.I. de C.V." RegimenFiscal="601" />
+  <cfdi:Receptor Rfc="TCO9101166Q0" Nombre="TECNOESPECIALIDADES COMERCIALES S.A. DE C.V." UsoCFDI="P01" />
+  <cfdi:Conceptos>
+    <cfdi:Concepto ClaveProdServ="80161505" Cantidad="1.00" ClaveUnidad="E48" Unidad="un" Descripcion="GASTOS DE ADMINISTRACIÓN DEL CONTRATO CA0000007898, ANEXO APV8143-001" ValorUnitario="1194.66" Importe="1194.66" Descuento="0.00">
+      <cfdi:Impuestos>
+        <cfdi:Traslados>
+          <cfdi:Traslado Base="1194.66" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="191.15" />
+        </cfdi:Traslados>
+      </cfdi:Impuestos>
+    </cfdi:Concepto>
+    <cfdi:Concepto ClaveProdServ="80161505" Cantidad="1.00" ClaveUnidad="E48" Unidad="un" Descripcion="GASTOS DE ARRENDAMIENTO DEL CONTRATO CA0000007898, ANEXO APV8143-001" ValorUnitario="1005.77" Importe="1005.77" Descuento="0.00">
+      <cfdi:Impuestos>
+        <cfdi:Traslados>
+          <cfdi:Traslado Base="1005.77" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="160.92" />
+        </cfdi:Traslados>
+      </cfdi:Impuestos>
+    </cfdi:Concepto>
+    <cfdi:Concepto ClaveProdServ="78111809" Cantidad="1.00" ClaveUnidad="E48" Unidad="un" Descripcion="RENTA 47/48 DEL CONTRATO CA0000007898 ANEXO APV8143-001 CORRESPONDIENTE A Abril/2021" ValorUnitario="6003.34" Importe="6003.34" Descuento="0.00">
+      <cfdi:Impuestos>
+        <cfdi:Traslados>
+          <cfdi:Traslado Base="6003.34" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="960.53" />
+        </cfdi:Traslados>
+      </cfdi:Impuestos>
+    </cfdi:Concepto>
+  </cfdi:Conceptos>
+  <cfdi:Impuestos TotalImpuestosRetenidos="0.00" TotalImpuestosTrasladados="1312.60">
+    <cfdi:Traslados>
+      <cfdi:Traslado Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="1312.60" />
+    </cfdi:Traslados>
+  </cfdi:Impuestos>
+  <cfdi:Complemento>
+    <tfd:TimbreFiscalDigital xmlns:tfd="http://www.sat.gob.mx/TimbreFiscalDigital" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sat.gob.mx/TimbreFiscalDigital http://www.sat.gob.mx/sitio_internet/cfd/TimbreFiscalDigital/TimbreFiscalDigitalv11.xsd" FechaTimbrado="2021-04-06T19:59:39" RfcProvCertif="EDI101020E99" UUID="8bda9d78-c9f4-4445-9bdc-1a023fdb1309" NoCertificadoSAT="00001000000506267356" SelloCFD="kjDQVII1OHPNP50bThtVhNRUA9WNS6VxGuaoMvS/6/ONYKj1ezUhoLhq88WuPrK/geIrpht1PyPZokCbvzkK8PHGGPaA2QUoIHy7wfe/HbvIEUUtcfuWYzrXUuxtJVMnmLMqV7Jbsl9yZmk8B3geuqT5dOLEWbfeozRcb7OM4yKdz351MOrBFlAHCrBgDwkgcF+JsFxZHzZlC1quxaCc6Wfa8uq2YgcClNW/mU49G00jD9P4Vx7b7r/72ACWSNTz0hufnd49N8coCQpBRHwYOv8dcG7iK4sWYwpIGN6vxYCLw8gm0X/p4WdLmkwqKC6PqiBuPGs6DyHvJSgMwIK1Lg==" SelloSAT="LyCK8k5WPmf83WH0RMgClKkFFykyxtLk6c1KcrgVHrf7PaQacog6gn/BFko0od8h95wpIRSrlqkxoGQV/h3qQ8E9R5uJMxG3NkLwfOa7i/udTFkapyLrsYGj+Zlh9OsneH6WgoNSHxLsYwNGICzKnSuVT5az611IBdmr2Ox1OTMDZCCrDPsTmK1GBcvpqkv48giawCqonMUM9r18eN2WYyHmwL+bPBrC7fPYW0MldPXjXi9hYe9f+zROS9VdlbnBGzNIK7MYpjzK4WLSSHha4+Ulo2wxjqMHSIhEQEusl6H5z+GcgG8OtKx2LpaDbw5wpKvBZoxi1HT3Twcm06oAPw==" Version="1.1">
+    </tfd:TimbreFiscalDigital>
+  </cfdi:Complemento>
+</cfdi:Comprobante>
