@@ -139,6 +139,11 @@ function buscar_email_sql($ServidorSQLAX, $BaseDatosSQLAX, $UsuarioSQLAX, $PassS
 function actualizar_email($ServidorSQLAX, $BaseDatosSQLAX, $UsuarioSQLAX, $PassSQLAX, $rfc, $email, $cuentaCliente)
 {
     try {
+        
+        if (trim($email) == '') {
+            //echo "<br>Email: vacio <br>";
+            $email = $cuentaCliente;
+        }
         $ConsultaSQLUpdate = "Update Facturas_Clientes Set email = ?, cuentaCliente = ? Where rfc = ?";
 
         $ConexionSQLUpdate = conectarSQLServer($ServidorSQLAX, $BaseDatosSQLAX, $UsuarioSQLAX, $PassSQLAX);

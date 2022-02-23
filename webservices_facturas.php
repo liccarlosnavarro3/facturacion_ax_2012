@@ -62,7 +62,7 @@ function call_webService($ServidorSQLAX, $BaseDatosSQLAX, $UsuarioSQLAX, $PassSQ
     try {
         $ConsultaSQLServer = "Select * From Facturas_Clientes Where (Isnull(codigo_resultado, '') = '') Or (Isnull(resultado_interno, '') = '' And Isnull(uuid, '') <> '') Order by Id";
 //        $ConsultaSQLServer = "Select top 10 * From Facturas_Clientes Where Isnull(resultado_interno, '') = '' And Isnull(uuid, '') <> '' Order by Id";
-        //$ConsultaSQLServer = "Select * From Facturas_Clientes Where rfc = 'GBI170531CH8' Order by Id";
+        //$ConsultaSQLServer = "Select * From Facturas_Clientes Where rfc = 'ALM9910114D6' Order by Id";
 
         $ConexionSQLServer = conectarSQLServer($ServidorSQLAX, $BaseDatosSQLAX, $UsuarioSQLAX, $PassSQLAX);
         $SentenciaSQLServer = $ConexionSQLServer->prepare($ConsultaSQLServer);
