@@ -60,7 +60,7 @@ $carpetaPagos = '\\\\SRVMDAOS\CFDI Prod\Pagos';
 function call_webService($ServidorSQLAX, $BaseDatosSQLAX, $UsuarioSQLAX, $PassSQLAX, $carpetaFacturas, $carpetaPagos, $urlWSExterna, $urlWSInterna)
 {
     try {
-        $ConsultaSQLServer = "Select * From Facturas_Clientes Where (Isnull(codigo_resultado, '') = '') Or (Isnull(resultado_interno, '') = '' And Isnull(uuid, '') <> '') Order by Id";
+        $ConsultaSQLServer = "Select * From Facturas_Clientes Where (Isnull(codigo_resultado, '') = '') Or (Isnull(resultado_interno, '') = '' And Isnull(uuid, '') <> '') Order by Id Asc";
 //        $ConsultaSQLServer = "Select top 10 * From Facturas_Clientes Where Isnull(resultado_interno, '') = '' And Isnull(uuid, '') <> '' Order by Id";
         //$ConsultaSQLServer = "Select * From Facturas_Clientes Where rfc = 'ALM9910114D6' Order by Id";
 
@@ -72,10 +72,10 @@ function call_webService($ServidorSQLAX, $BaseDatosSQLAX, $UsuarioSQLAX, $PassSQ
         echo "<ol>";
         while ($ResultadoSQLServer = $SentenciaSQLServer->fetch()) {
 
-            if ($ResultadoSQLServer['codigo_resultado'] == '') {
-                $Registro = $ResultadoSQLServer;
-                webService_portal_clientes($ServidorSQLAX, $BaseDatosSQLAX, $UsuarioSQLAX, $PassSQLAX, $Registro, $carpetaFacturas, $carpetaPagos, $urlWSExterna);
-            }
+//            if ($ResultadoSQLServer['codigo_resultado'] == '') {
+//                $Registro = $ResultadoSQLServer;
+//                webService_portal_clientes($ServidorSQLAX, $BaseDatosSQLAX, $UsuarioSQLAX, $PassSQLAX, $Registro, $carpetaFacturas, $carpetaPagos, $urlWSExterna);
+//            }
             if ($ResultadoSQLServer['resultado_interno'] == '' and $ResultadoSQLServer['uuid'] != '') {
                 webService_portal_empleados($ServidorSQLAX, $BaseDatosSQLAX, $UsuarioSQLAX, $PassSQLAX, $ResultadoSQLServer, $carpetaFacturas, $carpetaPagos, $urlWSInterna);
             }
