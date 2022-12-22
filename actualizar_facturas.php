@@ -53,7 +53,15 @@ require 'conexion.php';
 function actualiza_correo_numeroCliente($ServidorSQLAX, $BaseDatosSQLAX, $UsuarioSQLAX, $PassSQLAX)
 {
     try {
-        $ConsultaSQLServer = "Select Distinct rfc From Facturas_Clientes Where Isnull(email, '') = '' Or Isnull(cuentaCliente, '') = '' Order by rfc";
+        //$ConsultaSQLServer = "Select Distinct rfc From Facturas_Clientes Where Isnull(email, '') = '' Or Isnull(cuentaCliente, '') = '' Order by rfc";
+        $ConsultaSQLServer = 
+            "Select Distinct rfc"
+            . " From Facturas_Clientes"
+            . " Where (Isnull(email, '') = '' Or Isnull(cuentaCliente, '') = '')"
+            //. " And Substring(fechaDocumento, 9, 2) = '30'"
+            //. " And Substring(fechaDocumento, 6, 2) = '06'"
+            //. " And Substring(fechaDocumento, 1, 4) = '2022'"
+            . " Order by rfc";
 
         $ConexionSQLServer = conectarSQLServer($ServidorSQLAX, $BaseDatosSQLAX, $UsuarioSQLAX, $PassSQLAX);
 

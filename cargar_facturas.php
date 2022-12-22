@@ -21,13 +21,19 @@ libxml_use_internal_errors(TRUE);
 require 'conexion.php';
 
 //Ruta de carpetas
-$carpetaFacturas = '\\\\SRVMDAOS\CFDI Prod\Facturas';
-$carpetaPagos = '\\\\SRVMDAOS\CFDI Prod\Pagos';
+//$carpetaFacturas = '\\\\SRVMDAOS\CFDI Prod\Facturas';
+//$carpetaPagos = '\\\\SRVMDAOS\CFDI Prod\Pagos';
+//$carpetaFacturas = '\\\\172.16.110.15\\CFDI Prod\\Facturas';
+//$carpetaPagos = '\\\\172.16.110.15\\CFDI Prod\\Pagos';
+$carpetaFacturas = 'C:\\temp\\Facturas';
+$carpetaPagos = 'C:\\temp\\Pagos';
+//$carpetaFacturas = 'C:\\CXC\\Facturas';
+//$carpetaPagos = 'C:\\CXC\\Pagos';
 
 //Fechas de actualización
 $FechaActual = date('Y-m-d');
-$FechaDias = date("Y-m-d", strtotime($FechaActual . "- 1 days"));
-
+//$FechaDias = date("Y-m-d", strtotime($FechaActual . "- 3 days"));
+$FechaDias = date("Y-m-d", strtotime($FechaActual . "- 33 days"));
 
 ?>
 <!DOCTYPE html>
@@ -48,6 +54,7 @@ $FechaDias = date("Y-m-d", strtotime($FechaActual . "- 1 days"));
     <div>
         <h2>Inicia carga de facturas nuevas</h2>
         <?php
+	echo "<br>".$FechaDias."<br>";
         cargar_facturas_nuevas($carpetaFacturas, $ServidorSQLAX, $BaseDatosSQLAX, $UsuarioSQLAX, $PassSQLAX, $FechaDias);
         cargar_pagos_nuevos($carpetaPagos, $ServidorSQLAX, $BaseDatosSQLAX, $UsuarioSQLAX, $PassSQLAX, $FechaDias);
         ?>
@@ -71,86 +78,96 @@ function cargar_facturas_nuevas($carpetaFacturas, $ServidorSQLAX, $BaseDatosSQLA
         echo "<ol>";
         $IterarArchivos = new FilesystemIterator($carpetaFacturas);
         foreach ($IterarArchivos as $ArchivoIterado) {
-            if ($ArchivoIterado->getMTime() >= $FechaObjeto->getTimestamp()) {
+            //if ($ArchivoIterado->getMTime() >= $FechaObjeto->getTimestamp()) {
                 $archivo = $ArchivoIterado->getFilename();
-                if (substr($archivo, -3) == 'xml') {
-                    $total = $total + 1;
-                    $ConsultaSQLServer = "Select * From Facturas_Clientes Where archivo = ?";
+                //echo "<br>". substr($archivo, 0, -4) . ".xml";
+//                echo "<br>". substr($archivo, 0, -4) . ".pdf";
+                //if (substr($archivo, 0, 1) == 'A') {
+                    if (substr($archivo, -3) == 'xml') {
+                        $total = $total + 1;
+                        $ConsultaSQLServer = "Select * From Facturas_Clientes Where archivo = ?";
 
-                    $ConexionSQLServer = conectarSQLServer($ServidorSQLAX, $BaseDatosSQLAX, $UsuarioSQLAX, $PassSQLAX);
+                        $ConexionSQLServer = conectarSQLServer($ServidorSQLAX, $BaseDatosSQLAX, $UsuarioSQLAX, $PassSQLAX);
 
-                    $SentenciaSQLServer = $ConexionSQLServer->prepare($ConsultaSQLServer);
-                    $SentenciaSQLServer->execute(array(substr($archivo, 0, -4)));
+                        $SentenciaSQLServer = $ConexionSQLServer->prepare($ConsultaSQLServer);
+                        $SentenciaSQLServer->execute(array(substr($archivo, 0, -4)));
 
-                    $ResultadoSQLServer = $SentenciaSQLServer->fetch();
+                        $ResultadoSQLServer = $SentenciaSQLServer->fetch();
 
-                    if (!$ResultadoSQLServer) {
-                        $insert = $insert + 1;
+                        if (!$ResultadoSQLServer) {
+                            $insert = $insert + 1;
 
-                        $xmlArray = simplexml_load_file($carpetaFacturas . '\\' . $archivo);
-                        $namespaces = $xmlArray->getNamespaces(true);
+                            $xmlArray = simplexml_load_file($carpetaFacturas . '\\' . $archivo);
+                            $namespaces = $xmlArray->getNamespaces(true);
 
-                        $xmlArray->registerXPathNamespace('t', $namespaces['tfd']);
+                            $xmlArray->registerXPathNamespace('t', $namespaces['tfd']);
 
-                        $serie = $xmlArray['Serie'];
-                        $folio = $xmlArray['Folio'];
-                        $cve_cotizacion = $serie . $folio;
+                            $serie = $xmlArray['Serie'];
+                            $folio = $xmlArray['Folio'];
+                            $cve_cotizacion = $serie . $folio;
 
-                        $TipoDeComprobante = $xmlArray['TipoDeComprobante'];
+                            $TipoDeComprobante = $xmlArray['TipoDeComprobante'];
 
-                        if ($TipoDeComprobante == 'I')
-                            $tipoDocumento = '1';
-                        elseif ($TipoDeComprobante == 'E')
-                            $tipoDocumento = '5';
-                        else
-                            $tipoDocumento = '10';
+                            if ($TipoDeComprobante == 'I')
+                                $tipoDocumento = '1';
+                            elseif ($TipoDeComprobante == 'E')
+                                $tipoDocumento = '5';
+                            else
+                                $tipoDocumento = '10';
 
-                        $version = $xmlArray['Version'];
-                        $subtotal = $xmlArray['SubTotal'];
-                        $moneda = $xmlArray['Moneda'];
-                        $sello = $xmlArray['Sello'];
-                        $noCertificado = $xmlArray['NoCertificado'];
-                        $certificado = $xmlArray['Certificado'];
+                            $version = $xmlArray['Version'];
+                            $subtotal = $xmlArray['SubTotal'];
+                            $moneda = $xmlArray['Moneda'];
+                            $sello = $xmlArray['Sello'];
+                            $noCertificado = $xmlArray['NoCertificado'];
+                            $certificado = $xmlArray['Certificado'];
 
-                        $fechaDocumento = $xmlArray['Fecha'];
-                        $FechaSinGuion = substr($fechaDocumento, 0, 4) . substr($fechaDocumento, 5, 2) . substr($fechaDocumento, 8, 2);
+                            $fechaDocumento = $xmlArray['Fecha'];
+                            $FechaSinGuion = substr($fechaDocumento, 0, 4) . substr($fechaDocumento, 5, 2) . substr($fechaDocumento, 8, 2);
 
-                        $emisor = $xmlArray->xpath("//cfdi:Emisor");
+                            $emisor = $xmlArray->xpath("//cfdi:Emisor");
 
-                        $nombreXml = $emisor[0]['Rfc'] . '_CFDI_' . $serie . $folio . '_' . $FechaSinGuion . '.xml';
+                            $nombreXml = $emisor[0]['Rfc'] . '_CFDI_' . $serie . $folio . '_' . $FechaSinGuion . '.xml';
 
-                        $receptor = $xmlArray->xpath("//cfdi:Receptor");
-                        $nombreCliente = $receptor[0]['Nombre'];
+                            $receptor = $xmlArray->xpath("//cfdi:Receptor");
+                            $nombreCliente = $receptor[0]['Nombre'];
 
-                        $nombreCliente = str_replace("'", "", $nombreCliente);
+                            $nombreCliente = str_replace("'", "", $nombreCliente);
 
-                        $importeTotal = $xmlArray['Total'];
-                        $cancelado = 'N';
-                        $rfc = $receptor[0]['Rfc'];
+                            $importeTotal = $xmlArray['Total'];
+                            $cancelado = 'N';
+                            $rfc = $receptor[0]['Rfc'];
 
-                        $conceptos = $xmlArray->xpath("//cfdi:Conceptos//cfdi:Concepto");
+                            $conceptos = $xmlArray->xpath("//cfdi:Conceptos//cfdi:Concepto");
 
-                        $descripcion = $conceptos[0]['Descripcion'];
+                            $descripcion = $conceptos[0]['Descripcion'];
 
-                        $impuestos = $xmlArray->xpath("//cfdi:Impuestos");
-                        foreach ($impuestos as $impuesto) {
-                            if (isset($impuesto['TotalImpuestosTrasladados']))
-                                $iva = $impuesto['TotalImpuestosTrasladados'];
+                            $impuestos = $xmlArray->xpath("//cfdi:Impuestos");
+                            foreach ($impuestos as $impuesto) {
+                                if (isset($impuesto['TotalImpuestosTrasladados']))
+                                    $iva = $impuesto['TotalImpuestosTrasladados'];
+                            }
+
+                            foreach ($xmlArray->xpath('//t:TimbreFiscalDigital') as $tfd) {
+                                $uuid = $tfd['UUID'];
+                                $fechaTimbrado = $tfd['FechaTimbrado'];
+                                $selloSAT = $tfd['SelloSAT'];
+                                $noCertificadoSAT = $tfd['NoCertificadoSAT'];
+                            }
+
+                            guardar_facturas_nuevas($ServidorSQLAX, $BaseDatosSQLAX, $UsuarioSQLAX, $PassSQLAX, substr($archivo, 0, -4), $cve_cotizacion, $serie, $folio, $tipoDocumento, $moneda, $fechaDocumento, $nombreXml, $nombreCliente, $importeTotal, $cancelado, $rfc, $descripcion, $version, $subtotal, $iva, $uuid, $fechaTimbrado, $sello, $noCertificado, $certificado, $selloSAT, $noCertificadoSAT, $TipoDeComprobante);
                         }
-
-                        foreach ($xmlArray->xpath('//t:TimbreFiscalDigital') as $tfd) {
-                            $uuid = $tfd['UUID'];
-                            $fechaTimbrado = $tfd['FechaTimbrado'];
-                            $selloSAT = $tfd['SelloSAT'];
-                            $noCertificadoSAT = $tfd['NoCertificadoSAT'];
-                        }
-
-                        guardar_facturas_nuevas($ServidorSQLAX, $BaseDatosSQLAX, $UsuarioSQLAX, $PassSQLAX, substr($archivo, 0, -4), $cve_cotizacion, $serie, $folio, $tipoDocumento, $moneda, $fechaDocumento, $nombreXml, $nombreCliente, $importeTotal, $cancelado, $rfc, $descripcion, $version, $subtotal, $iva, $uuid, $fechaTimbrado, $sello, $noCertificado, $certificado, $selloSAT, $noCertificadoSAT, $TipoDeComprobante);
+                        $SentenciaSQLServer = null;
+                        $ConexionSQLServer = null;
+                        unlink(substr($carpetaFacturas . '\\' . $archivo, 0, -4) . ".xml");
+                        unlink(substr($carpetaFacturas . '\\' . $archivo, 0, -4) . ".pdf");
                     }
-                    $SentenciaSQLServer = null;
-                    $ConexionSQLServer = null;
-                }
-            }
+//                    unlink(substr($carpetaFacturas . '\\' . $archivo, 0, -4) . ".xml");
+//                    unlink(substr($carpetaFacturas . '\\' . $archivo, 0, -4) . ".pdf");
+                //}
+            //}
+//            unlink(substr($carpetaFacturas . '\\' . $archivo, 0, -4) . ".xml");
+//            unlink(substr($carpetaFacturas . '\\' . $archivo, 0, -4) . ".pdf");
         }
         echo "</ol>";
 
@@ -206,7 +223,7 @@ function cargar_pagos_nuevos($carpetaPagos, $ServidorSQLAX, $BaseDatosSQLAX, $Us
         $IterarArchivos = new FilesystemIterator($carpetaPagos);
         echo "<ol>";
         foreach ($IterarArchivos as $ArchivoIterado) {
-            if ($ArchivoIterado->getMTime() >= $FechaObjeto->getTimestamp()) {
+//            if ($ArchivoIterado->getMTime() >= $FechaObjeto->getTimestamp()) {
                 $archivo = $ArchivoIterado->getFilename();
                 if (substr($archivo, -3) == 'xml') {
                     $total = $total + 1;
@@ -278,8 +295,10 @@ function cargar_pagos_nuevos($carpetaPagos, $ServidorSQLAX, $BaseDatosSQLAX, $Us
                     }
                     $SentenciaSQLServer = null;
                     $ConexionSQLServer = null;
+                    unlink(substr($carpetaPagos . '\\' . $archivo, 0, -4) . ".xml");
+                    unlink(substr($carpetaPagos . '\\' . $archivo, 0, -4) . ".pdf");
                 }
-            }
+//            }
         }
         echo "</ol>";
 

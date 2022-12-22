@@ -23,6 +23,14 @@ $BaseDatosSQLAX = "abcleasing_33_pruebas";
 $UsuarioSQLAX = "FactAXOwn"; // "sa";
 $PassSQLAX = "RGJGNGN0dXJhYzEwbkBY"; // "UzE0cENvbW00MDQyLg==";
 
+//Bases de datos SQL Server 40
+$ServidorSQL40 = "ABCKummel\FACTURACION";
+$BaseDatosSQL40 = "datosfactura40";
+//$BaseDatosSQL40 = "datosfactura40_BL";
+//$BaseDatosSQL40 = "datosfactura40_GF";
+$UsuarioSQL40 = "edifactown";
+$PassSQL40 = "ZGk4bl9rMjlOa21PX2RQeg==";
+
 // //Bases de datos Oracle
 // $ServidorOracle = "172.16.110.31";
 // $BaseDatosOracle = "IMXPROD";

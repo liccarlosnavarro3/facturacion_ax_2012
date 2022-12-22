@@ -25,8 +25,12 @@ $urlWSExterna = "https://abccfdi.com/abcleasingweb/abcWeb.php?wsdl";
 $urlWSInterna = "http://abckummel/enterprise/api/register_CFDI";
 
 // //Ruta de carpetas
-$carpetaFacturas = '\\\\SRVMDAOS\CFDI Prod\Facturas';
-$carpetaPagos = '\\\\SRVMDAOS\CFDI Prod\Pagos';
+//$carpetaFacturas = '\\\\SRVMDAOS\CFDI Prod\Facturas';
+//$carpetaPagos = '\\\\SRVMDAOS\CFDI Prod\Pagos';
+$carpetaFacturas = 'C:\\CXC\\Facturas';
+$carpetaPagos = 'C:\\CXC\\Pagos';
+//$carpetaFacturas = 'C:\\CXC\\Facturas';
+//$carpetaPagos = 'C:\\CXC\\Pagos';
 
 ?>
 <!DOCTYPE html>
@@ -60,9 +64,43 @@ $carpetaPagos = '\\\\SRVMDAOS\CFDI Prod\Pagos';
 function call_webService($ServidorSQLAX, $BaseDatosSQLAX, $UsuarioSQLAX, $PassSQLAX, $carpetaFacturas, $carpetaPagos, $urlWSExterna, $urlWSInterna)
 {
     try {
-        $ConsultaSQLServer = "Select * From Facturas_Clientes Where (Isnull(codigo_resultado, '') = '') Or (Isnull(resultado_interno, '') = '' And Isnull(uuid, '') <> '') Order by Id Asc";
-//        $ConsultaSQLServer = "Select top 10 * From Facturas_Clientes Where Isnull(resultado_interno, '') = '' And Isnull(uuid, '') <> '' Order by Id";
-        //$ConsultaSQLServer = "Select * From Facturas_Clientes Where rfc = 'ALM9910114D6' Order by Id";
+        $ConsultaSQLServer =
+            "Select * "
+            . "From Facturas_Clientes "
+            . "Where (Isnull(codigo_resultado, '') = '') "
+                . "Or (Isnull(resultado_interno, '') = '' "
+                . "And Isnull(uuid, '') <> '') "
+            . "Order by Id Asc";
+        
+//        $ConsultaSQLServer =
+//            "Select * "
+//                . "From Facturas_Clientes "
+//                . "Where ((Isnull(codigo_resultado, '') = '') "
+//                . "Or (Isnull(resultado_interno, '') = '' "
+//                . "And Isnull(uuid, '') <> '')) "
+//                . "And serie = 'A' "
+//                . "Order by Id Asc";
+
+        //$ConsultaSQLServer = "Select * From Facturas_Clientes Where (Isnull(codigo_resultado, '') = '') Or (Isnull(resultado_interno, '') = '' And Isnull(uuid, '') <> '') Order by Id Asc";
+        //$ConsultaSQLServer = "Select top 10 * From Facturas_Clientes Where Isnull(resultado_interno, '') = '' And Isnull(uuid, '') <> '' Order by Id";
+        //$ConsultaSQLServer = "Select * From Facturas_Clientes Where rfc In ('HEL010307G8A', 'HMA160928431', 'HEL010307G8A0') And ((Isnull(codigo_resultado, '') = '') Or (Isnull(resultado_interno, '') = '' And Isnull(uuid, '') <> '')) Order by Id Desc";
+        
+//        $ConsultaSQLServer = 
+//            "Select * "
+//                . "From Facturas_Clientes "
+//                . "Where rfc In ('CCR950314II0', 'AAD180531SB6', 'EPL0806053V4', 'DHE160818B48', 'EPM880422LV3', 'EKM970207FB9', 'EAG811205M74', 'GMA040326F27', 'GCO0303128G0', 'HEL010307G8A0', 'HMA160928431', 'HEL010307G8A', 'HEL010307GBA', 'IBD1011305M1', 'PSA131113RI2', 'RVC131113IG3', 'SME880302R49', 'SAS0807079B7', 'SEM030423186', 'VFC160729BW3', 'NWM9709244W4', 'TFI211007QA5') "
+//                . "    And ((Isnull(codigo_resultado, '') = '') Or (Isnull(resultado_interno, '') = '' And Isnull(uuid, '') <> '')) "
+//                . "Order by Id Asc";
+
+//        $ConsultaSQLServer = 
+//            "Select *
+//            From Facturas_Clientes
+//            Where ((Isnull(codigo_resultado, '') = '') Or (Isnull(resultado_interno, '') = '' And Isnull(uuid, '') <> ''))
+//                    --And serie = 'A'
+//                    And Substring(fechaDocumento, 9, 2) = '28'
+//                    And Substring(fechaDocumento, 6, 2) = '06'
+//                    And Substring(fechaDocumento, 1, 4) = '2022'
+//            Order by Id Asc";
 
         $ConexionSQLServer = conectarSQLServer($ServidorSQLAX, $BaseDatosSQLAX, $UsuarioSQLAX, $PassSQLAX);
         $SentenciaSQLServer = $ConexionSQLServer->prepare($ConsultaSQLServer);
@@ -71,14 +109,15 @@ function call_webService($ServidorSQLAX, $BaseDatosSQLAX, $UsuarioSQLAX, $PassSQ
 //        $i = 0;
         echo "<ol>";
         while ($ResultadoSQLServer = $SentenciaSQLServer->fetch()) {
-
-//            if ($ResultadoSQLServer['codigo_resultado'] == '') {
-//                $Registro = $ResultadoSQLServer;
-//                webService_portal_clientes($ServidorSQLAX, $BaseDatosSQLAX, $UsuarioSQLAX, $PassSQLAX, $Registro, $carpetaFacturas, $carpetaPagos, $urlWSExterna);
-//            }
             if ($ResultadoSQLServer['resultado_interno'] == '' and $ResultadoSQLServer['uuid'] != '') {
                 webService_portal_empleados($ServidorSQLAX, $BaseDatosSQLAX, $UsuarioSQLAX, $PassSQLAX, $ResultadoSQLServer, $carpetaFacturas, $carpetaPagos, $urlWSInterna);
             }
+            if ($ResultadoSQLServer['codigo_resultado'] == '') {
+                $Registro = $ResultadoSQLServer;
+                webService_portal_clientes($ServidorSQLAX, $BaseDatosSQLAX, $UsuarioSQLAX, $PassSQLAX, $Registro, $carpetaFacturas, $carpetaPagos, $urlWSExterna);
+            }
+            //Borrar archivos procesados
+            BorrarArchivosProcesados($ServidorSQLAX, $BaseDatosSQLAX, $UsuarioSQLAX, $PassSQLAX, $ResultadoSQLServer['archivo'], $ResultadoSQLServer['serie'], $carpetaPagos, $carpetaFacturas);
         }
         echo "</ol>";
         $SentenciaSQLServer = null;
@@ -294,6 +333,47 @@ function actualizar_respuesta_interna($ServidorSQLAX, $BaseDatosSQLAX, $UsuarioS
         $ConexionSQLInt = null;
     } catch (Exception $e) {
         echo "<br>Error al actualizar respuesta de " . $NombreArchivo;
+        echo "<br>ERROR: " . $e->getMessage() . "<br>";
+    }
+}
+
+function BorrarArchivosProcesados($ServidorSQL, $BaseDatosSQL, $UsuarioSQL, $PassSQL, $archivo, $serie, $carpetaPagos, $carpetaFacturas)
+{
+    try {
+        $ConsultaSQLServer =
+            "Select * "
+            . "From Facturas_Clientes "
+            . "Where archivo = '" . $archivo . "' "
+                . "And (Isnull(codigo_resultado, '') <> '' "
+                . "And Isnull(resultado_interno, '') <> '')";
+        
+        $ConexionSQLServer = conectarSQLServer($ServidorSQL, $BaseDatosSQL, $UsuarioSQL, $PassSQL);
+        $SentenciaSQLServer = $ConexionSQLServer->prepare($ConsultaSQLServer);
+        $SentenciaSQLServer->execute();
+        
+        while ($ResultadoSQLServer = $SentenciaSQLServer->fetch()) {
+            if ($ResultadoSQLServer['resultado_interno'] != '' and $ResultadoSQLServer['codigo_resultado'] != '') {
+                //$archivo = $ResultadoSQLServer['archivo'];
+                $archivoPDF = $archivo . '.pdf';
+                $archivoXML = $archivo . '.xml';
+                //$serie = $ResultadoSQLServer['serie'];
+                
+                if (strlen($serie) > 1) {
+                    $pathPdf = $carpetaPagos . "\\" . $archivoPDF;
+                    $pathXml = $carpetaPagos . "\\" . $archivoXML;
+                } else {
+                    $pathPdf = $carpetaFacturas . "\\" . $archivoPDF;
+                    $pathXml = $carpetaFacturas . "\\" . $archivoXML;
+                }
+            
+//              echo "<br>" . $pathPdf . "<br>";
+//              echo "<br>" . $pathXml . "<br>";        
+                unlink($pathPdf);
+                unlink($pathXml);
+            }
+        }
+    } catch (Exception $e) {
+        echo "<br>Error al borrar archivos " . $archivo;
         echo "<br>ERROR: " . $e->getMessage() . "<br>";
     }
 }
